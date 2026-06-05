@@ -1,10 +1,11 @@
 import tkinter as tk
 import os
+from tkinter import filedialog
 from PIL import Image, ImageTk, ImageDraw
-class ColoringGameStep2:
+class ColoringGameStep3:
     def __init__(self, root):
         self.root = root
-        self.root.title("Winx: Магия Цвета (Шаг 2 — Выбор картинок)")
+        self.root.title("Winx: Волшебницы цвета")
         self.current_color = "pink"
         self.buttons = {}
         self.image_files = {
@@ -33,8 +34,10 @@ class ColoringGameStep2:
             btn = tk.Button(right_panel, bg=c, width=8, height=1, command=lambda col=c: self.set_color(col))
             btn.pack(pady=3)
             self.buttons[c] = btn
+        tk.Button(right_panel, text="Сохранить ✨", bg="#98FB98", font=("Arial", 10, "bold"),
+                  command=self.save_image).pack(side='bottom', pady=10, fill='x')
         tk.Button(right_panel, text="Очистить", bg="#FFB6C1", font=("Arial", 10, "bold"),
-                  command=self.clear_canvas).pack(side='bottom', pady=20, fill='x')
+                  command=self.clear_canvas).pack(side='bottom', pady=10, fill='x')
         self.set_color(self.current_color)
         self.render_image()
     def load_all_contours(self):
@@ -85,7 +88,18 @@ class ColoringGameStep2:
     def clear_canvas(self):
         self.current_img = self.base_images[self.current_key].copy()
         self.render_image()
+    def save_image(self):
+        default_name = f"my_{self.current_key.lower().split()[0]}.png"
+        file_path = filedialog.asksaveasfilename(
+            defaultextension=".png",
+            filetypes=[("PNG Image", "*.png"), ("All Files", "*.*")],
+            initialfile=default_name,
+            title="Сохранить раскраску"
+        )
+        if file_path:
+            self.current_img.save(file_path, "PNG")
+            print(f"Рисунок успешно сохранен: {file_path}")
 if __name__ == "__main__":
     root = tk.Tk()
-    app = ColoringGameStep2(root)
+    app = ColoringGameStep3(root)
     root.mainloop()
