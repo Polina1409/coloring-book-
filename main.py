@@ -2,10 +2,10 @@ import tkinter as tk
 import os
 from tkinter import filedialog
 from PIL import Image, ImageTk, ImageDraw
-class ColoringGameStep3:
+class ColoringGameStep4:
     def __init__(self, root):
         self.root = root
-        self.root.title("Winx: Волшебницы цвета")
+        self.root.title("Winx: Магия Цвета (Шаг 4 — Плавная заливка)")
         self.current_color = "pink"
         self.buttons = {}
         self.image_files = {
@@ -83,7 +83,7 @@ class ColoringGameStep3:
         if 0 <= x < self.current_img.width and 0 <= y < self.current_img.height:
             rgb = self.root.winfo_rgb(self.current_color)
             rgb_tuple = (rgb[0] // 256, rgb[1] // 256, rgb[2] // 256)
-            ImageDraw.floodfill(self.current_img, (x, y), rgb_tuple)
+            ImageDraw.floodfill(self.current_img, (x, y), rgb_tuple, thresh=40)
             self.render_image()
     def clear_canvas(self):
         self.current_img = self.base_images[self.current_key].copy()
@@ -98,8 +98,7 @@ class ColoringGameStep3:
         )
         if file_path:
             self.current_img.save(file_path, "PNG")
-            print(f"Рисунок успешно сохранен: {file_path}")
 if __name__ == "__main__":
     root = tk.Tk()
-    app = ColoringGameStep3(root)
+    app = ColoringGameStep4(root)
     root.mainloop()
